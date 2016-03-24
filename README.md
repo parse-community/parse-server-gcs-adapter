@@ -1,4 +1,8 @@
 # parse-server-gcs-adapter
+[![Build
+Status](https://travis-ci.org/parse-server-modules/parse-server-gcs-adapter.svg?branch=master)](https://travis-ci.org/parse-server-modules/parse-server-gcs-adapter)
+[![codecov.io](https://codecov.io/github/parse-server-modules/parse-server-gcs-adapter/coverage.svg?branch=master)](https://codecov.io/github/parse-server-modules/parse-server-gcs-adapter?branch=master)
+
 parse-server adapter for Google Cloud Storage
 
 # installation
