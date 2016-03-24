@@ -1,0 +1,44 @@
+'use strict';
+let filesAdapterTests = require('parse-server-conformance-tests').files;
+
+let GCSAdapter = require('../index.js');
+
+describe('GCSAdapter tests', () => {
+
+  it('should throw when not initialized properly', () => {
+    expect(() => {
+      var gcsAdapter = new GCSAdapter();
+    }).toThrow('GCSAdapter requires an projectId')
+
+    expect(() => {
+      var gcsAdapter = new GCSAdapter('projectId');
+    }).toThrow('GCSAdapter requires an keyFilename')
+
+    expect(() => {
+      var gcsAdapter = new GCSAdapter('projectId', 'keyFilename');
+    }).toThrow('GCSAdapter requires an bucket')
+
+    expect(() => {
+      var gcsAdapter = new GCSAdapter({ projectId: 'projectId'});
+    }).toThrow('GCSAdapter requires an keyFilename')
+    expect(() => {
+      var gcsAdapter = new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename'});
+    }).toThrow('GCSAdapter requires an bucket')
+  })
+
+  it('should not throw when initialized properly', () => {
+    expect(() => {
+      var gcsAdapter = new GCSAdapter('projectId', 'keyFilename', 'bucket');
+    }).not.toThrow()
+
+    expect(() => {
+      var gcsAdapter = new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename', bucket: 'bucket'});
+    }).not.toThrow('GCSAdapter requires an bucket')
+  })
+
+  if (process.env.GCP_PROJECT_ID && process.env.GCP_KEYFILE_PATH && process.env.GCS_BUCKET) {
+    // Should be initialized from the env
+    let gcsAdapter = new GCSAdapter();
+    filesAdapterTests.testAdapter("GCSAdapter", gcs);
+  }
+})

@@ -1,0 +1,23 @@
+{
+  "name": "parse-server-gcs-adapter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "gcloud": "^0.29.0",
+    "jasmine": "^2.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "parse-server",
+    "google",
+    "cloud",
+    "storage",
+    "gcs"
+  ],
+  "author": "Parse",
+  "license": "MIT"
+}
