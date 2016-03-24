@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "gcloud": "^0.29.0",
-    "jasmine": "^2.4.1"
+    "jasmine": "^2.4.1",
+    "parse-server-conformance-tests": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
