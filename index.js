@@ -132,7 +132,7 @@ GCSAdapter.prototype.getFileData = function(filename) {
 // otherwise we serve the file through parse-server.
 GCSAdapter.prototype.getFileLocation = function(config, filename) {
   if (this._directAccess) {
-    return `https://${this._bucket}.storage.googleapis.com/${this._bucketPrefix + filename}`;
+    return `https://storage.googleapis.com/${this._bucket}/${this._bucketPrefix + filename}`;
   }
   return (config.mount + '/files/' + config.applicationId + '/' + encodeURIComponent(filename));
 }
