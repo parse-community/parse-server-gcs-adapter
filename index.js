@@ -31,8 +31,8 @@ function optionsFromArguments(args) {
   } else {
     options = projectIdOrOptions || {};
   }
-  options = requiredOrFromEnvironment(options, 'projectId', 'GCP_PROJECT_ID');
-  options = requiredOrFromEnvironment(options, 'keyFilename', 'GCP_KEYFILE_PATH');
+  options = fromEnvironmentOrDefault(options, 'projectId', 'GCP_PROJECT_ID', undefined);
+  options = fromEnvironmentOrDefault(options, 'keyFilename', 'GCP_KEYFILE_PATH', undefined);
   options = requiredOrFromEnvironment(options, 'bucket', 'GCS_BUCKET');
   options = fromEnvironmentOrDefault(options, 'bucketPrefix', 'GCS_BUCKET_PREFIX', '');
   options = fromEnvironmentOrDefault(options, 'directAccess', 'GCS_DIRECT_ACCESS', false);
@@ -55,12 +55,7 @@ function GCSAdapter() {
   this._bucketPrefix = options.bucketPrefix;
   this._directAccess = options.directAccess;
 
-  let storageOptions = {
-    projectId: options.projectId,
-    keyFilename: options.keyFilename
-  };
-
-  this._gcsClient = new storage(storageOptions);
+  this._gcsClient = new storage(options);
 }
 
 GCSAdapter.prototype.createFile = function(filename, data, contentType) {
