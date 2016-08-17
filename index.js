@@ -29,7 +29,7 @@ function optionsFromArguments(args) {
       options.directAccess = otherOptions.directAccess;
     }
   } else {
-    options = projectIdOrOptions || {};
+    options = Object.assign( {}, projectIdOrOptions);
   }
   options = fromEnvironmentOrDefault(options, 'projectId', 'GCP_PROJECT_ID', undefined);
   options = fromEnvironmentOrDefault(options, 'keyFilename', 'GCP_KEYFILE_PATH', undefined);
