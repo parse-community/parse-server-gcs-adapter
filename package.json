@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "google-cloud": "^0.39.0"
+    "@google-cloud/storage": "^0.1.1"
   },
   "devDependencies": {
     "codecov": "^1.0.1",
