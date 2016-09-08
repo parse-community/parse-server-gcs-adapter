@@ -1,7 +1,7 @@
 'use strict';
 // GCSAdapter
 // Store Parse Files in Google Cloud Storage: https://cloud.google.com/storage
-const storage = require('google-cloud').storage;
+const storage = require('@google-cloud/storage');
 
 function requiredOrFromEnvironment(options, key, env) {
   options[key] = options[key] || process.env[env];
