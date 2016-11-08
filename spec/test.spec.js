@@ -1,6 +1,5 @@
 'use strict';
-let filesAdapterTests = require('parse-server-conformance-tests').files,
-  expect = require('expect');
+let filesAdapterTests = require('parse-server-conformance-tests').files;
 
 let GCSAdapter = require('../index.js');
 
@@ -31,11 +30,11 @@ describe('GCSAdapter tests', () => {
   it('should not throw when initialized properly', () => {
     expect(() => {
       return new GCSAdapter('projectId', 'keyFilename', 'bucket');
-    }).toNotThrow();
+    }).not.toThrow();
 
     expect(() => {
       return new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename', bucket: 'bucket'});
-    }).toNotThrow('GCSAdapter requires an bucket')
+    }).not.toThrow();
   });
 
   if (process.env.GCP_PROJECT_ID && process.env.GCP_KEYFILE_PATH && process.env.GCS_BUCKET) {
