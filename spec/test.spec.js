@@ -7,38 +7,40 @@ describe('GCSAdapter tests', () => {
 
   it('should throw when not initialized properly', () => {
     expect(() => {
-      var gcsAdapter = new GCSAdapter();
-    }).toThrow('GCSAdapter requires an projectId')
+      return new GCSAdapter();
+    }).toThrow('GCSAdapter requires an bucket');
 
     expect(() => {
-      var gcsAdapter = new GCSAdapter('projectId');
-    }).toThrow('GCSAdapter requires an keyFilename')
+      return new GCSAdapter('projectId');
+    }).toThrow('GCSAdapter requires an bucket');
 
     expect(() => {
-      var gcsAdapter = new GCSAdapter('projectId', 'keyFilename');
-    }).toThrow('GCSAdapter requires an bucket')
+      return new GCSAdapter('projectId', 'keyFilename');
+    }).toThrow('GCSAdapter requires an bucket');
 
     expect(() => {
-      var gcsAdapter = new GCSAdapter({ projectId: 'projectId'});
-    }).toThrow('GCSAdapter requires an keyFilename')
+      return new GCSAdapter({ projectId: 'projectId'});
+    }).toThrow('GCSAdapter requires an bucket');
+
     expect(() => {
-      var gcsAdapter = new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename'});
-    }).toThrow('GCSAdapter requires an bucket')
-  })
+      return new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename'});
+    }).toThrow('GCSAdapter requires an bucket');
+  });
 
   it('should not throw when initialized properly', () => {
     expect(() => {
-      var gcsAdapter = new GCSAdapter('projectId', 'keyFilename', 'bucket');
-    }).not.toThrow()
+      return new GCSAdapter('projectId', 'keyFilename', 'bucket');
+    }).not.toThrow();
 
     expect(() => {
-      var gcsAdapter = new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename', bucket: 'bucket'});
-    }).not.toThrow('GCSAdapter requires an bucket')
-  })
+      return new GCSAdapter({ projectId: 'projectId' , keyFilename: 'keyFilename', bucket: 'bucket'});
+    }).not.toThrow();
+  });
 
   if (process.env.GCP_PROJECT_ID && process.env.GCP_KEYFILE_PATH && process.env.GCS_BUCKET) {
     // Should be initialized from the env
     let gcsAdapter = new GCSAdapter();
     filesAdapterTests.testAdapter("GCSAdapter", gcs);
   }
-})
+
+});
