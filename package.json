@@ -22,6 +22,7 @@
     "storage",
     "gcs"
   ],
+  "homepage": "https://github.com/parse-server-modules/parse-server-gcs-adapter#readme",
   "author": "Parse",
   "license": "MIT"
 }
