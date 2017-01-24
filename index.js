@@ -62,7 +62,8 @@ GCSAdapter.prototype.createFile = function(filename, data, contentType) {
   let params = {
     metadata: {
       contentType: contentType || 'application/octet-stream'
-    }    
+    },
+    resumable: false
   };
 
   return new Promise((resolve, reject) => {
