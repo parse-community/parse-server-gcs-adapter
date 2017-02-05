@@ -26,8 +26,9 @@ parse-server adapter for Google Cloud Storage
       "bucket": "my_bucket",
       // optional:
       "bucketPrefix": '', // default value
-      "directAccess": false // default value
-    } 
+      "directAccess": false, // default value
+      "resumable": false // default value
+    }
   }
 }
 ```
@@ -59,11 +60,12 @@ And update your config / options
 ```
 var GCSAdapter = require('parse-server-gcs-adapter');
 
-var gcsAdapter = new GCSAdapter('project', 
-								'keyFilePath', 
+var gcsAdapter = new GCSAdapter('project',
+								'keyFilePath',
 								'bucket' , {
 									bucketPrefix: '',
-									directAccess: false
+									directAccess: false,
+									resumable: false
 								});
 
 var api = new ParseServer({
@@ -80,10 +82,11 @@ var GCSAdapter = require('parse-server-gcs-adapter');
 
 var gcsOptions = {
 	"projectId": "projectId",
-    "keyFilename": "path/to/keyfile",
-    "bucket": "my_bucket",
-    "bucketPrefix": '',
-	"directAccess": false
+  "keyFilename": "path/to/keyfile",
+  "bucket": "my_bucket",
+  "bucketPrefix": '',
+	"directAccess": false,
+	"resumable": false
 }
 
 var gcsAdapter = new GCSAdapter(gcsOptions);
@@ -94,5 +97,3 @@ var api = new ParseServer({
 	filesAdapter: gcsAdapter
 })
 ```
-
-
