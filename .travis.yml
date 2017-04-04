@@ -1,7 +1,14 @@
 branches:
   only:
-    - master
+  - master
 language: node_js
 node_js:
-  - "4.3"
-after_success: ./node_modules/.bin/codecov
+- '4.3'
+after_success: "./node_modules/.bin/codecov"
+deploy:
+  provider: npm
+  api_key:
+    secure: CwgmTv+ZsLda0ku8Jygd8eTbHYMXWUJTAMe/Vr62qvjnK2E2Rq23oVPXa9YAo3ACoH1zfz+8PAwvSOmAaoJ9D+Au4vq8BI2v8vEnCoxAbIijjgzgq41fJTpFvYhdLh18CPj+yE7WOAk2CBCTodI7spXvenKcDN9GBZ1zuL5YyJpTfL2Em6KlVj/2Q6vv9xDI3d6LxE2u2/SaP2ndA759ZoRapaab2uF/Er3K2g6jBexVj5WSiaaGITnhWoqr2b40usoe2Tjtj4CK86LfwSCqS+gMb9Kdhq4SeWJ+gM2CKyF2eHiS9zU4ysTwGRaHJhw8ehhAOdHvtOQ5ImStM9vBogG/hX49zyl/uwTakuwcqOcZmmCR7YP97E4179MKz2onHH2NxNxVFMaKrJPszbh6zo13UFPpaFocxXgI8E3BaSeheo+N/iEzwVF1Qktx5KTjYUiGM+3uKeTBjxB5BzKAVNfuyO+ZK4/Q7n4HhkXVfx9HX/PKlBk0/Fmdgf4jSecDt5nGO5m7CZFXic6fmw1KQTBc4PONnmey0YhQvsAHCUukguTTfNdPxIyWp2kNQFD312Qm3iBQBIV9tilBHiZMXKuro8HrRntdleSTaZafzpbOWAyM4/+xfNdKQ8sG79F31ngwX2xhZiQSApvQXowYFOlbKVT4wu3aeRYR/sidG9g=
+  on:
+    tags: true
+    repo: parse-server-modules/parse-server-gcs-adapter
