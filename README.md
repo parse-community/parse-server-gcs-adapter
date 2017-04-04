@@ -2,6 +2,7 @@
 [![Build
 Status](https://travis-ci.org/parse-server-modules/parse-server-gcs-adapter.svg?branch=master)](https://travis-ci.org/parse-server-modules/parse-server-gcs-adapter)
 [![codecov.io](https://codecov.io/github/parse-server-modules/parse-server-gcs-adapter/coverage.svg?branch=master)](https://codecov.io/github/parse-server-modules/parse-server-gcs-adapter?branch=master)
+[![NPM Version](https://img.shields.io/npm/v/parse-server-gcs-adapter.svg?style=flat-square)](https://www.npmjs.com/package/parse-server-gcs-adapter)
 
 parse-server adapter for Google Cloud Storage
 
@@ -52,6 +53,10 @@ And update your config / options
   "filesAdapter": "parse-server-gcs-adapter"
 }
 ```
+
+Alternatively, you can use
+
+`GCLOUD_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS` environment variables.
 
 
 ### passing as an instance
