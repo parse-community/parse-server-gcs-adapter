@@ -53,6 +53,10 @@ And update your config / options
 }
 ```
 
+Alternatively, you can use
+
+`GCLOUD_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS` environment variables.
+
 
 ### passing as an instance
 
