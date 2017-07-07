@@ -27,6 +27,7 @@ function optionsFromArguments(args) {
     if (otherOptions) {
       options.bucketPrefix = otherOptions.bucketPrefix;
       options.directAccess = otherOptions.directAccess;
+      options.resumable = otherOptions.resumable;
     }
   } else {
     options = Object.assign( {}, projectIdOrOptions);
@@ -36,6 +37,7 @@ function optionsFromArguments(args) {
   options = requiredOrFromEnvironment(options, 'bucket', 'GCS_BUCKET');
   options = fromEnvironmentOrDefault(options, 'bucketPrefix', 'GCS_BUCKET_PREFIX', '');
   options = fromEnvironmentOrDefault(options, 'directAccess', 'GCS_DIRECT_ACCESS', false);
+  options = fromEnvironmentOrDefault(options, 'resumable', 'GCS_RESUMABLE', false);
   return options;
 }
 
@@ -47,6 +49,7 @@ supported options
 *bucket / 'GCS_BUCKET'
 { bucketPrefix / 'GCS_BUCKET_PREFIX' defaults to ''
 directAccess / 'GCS_DIRECT_ACCESS' defaults to false
+resumable / 'GCS_RESUMABLE' defaults to false
 */
 function GCSAdapter() {
   let options = optionsFromArguments(arguments);
@@ -54,15 +57,19 @@ function GCSAdapter() {
   this._bucket = options.bucket;
   this._bucketPrefix = options.bucketPrefix;
   this._directAccess = options.directAccess;
+  this._resumable = options.resumable;
+  // Not needed for gcsClient constructor
+  delete options.resumable;
 
   this._gcsClient = new storage(options);
 }
 
-GCSAdapter.prototype.createFile = function(filename, data, contentType) {
+GCSAdapter.prototype.createFile = function(filename, data, contentType, resumable) {
   let params = {
     metadata: {
       contentType: contentType || 'application/octet-stream'
-    }    
+    },
+    resumable: resumable || this._resumable
   };
 
   return new Promise((resolve, reject) => {
