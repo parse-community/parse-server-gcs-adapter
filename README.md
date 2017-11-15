@@ -62,7 +62,7 @@ Alternatively, you can use
 ### passing as an instance
 
 ```
-var GCSAdapter = require('parse-server-gcs-adapter');
+var GCSAdapter = require('@parse/gcs-files-adapter');
 
 var gcsAdapter = new GCSAdapter('project', 
 								'keyFilePath', 
@@ -81,7 +81,7 @@ var api = new ParseServer({
 or with an options hash
 
 ```
-var GCSAdapter = require('parse-server-gcs-adapter');
+var GCSAdapter = require('@parse/gcs-files-adapter');
 
 var gcsOptions = {
 	"projectId": "projectId",
