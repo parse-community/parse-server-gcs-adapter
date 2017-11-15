@@ -1,5 +1,5 @@
 {
-  "name": "parse-server-gcs-adapter",
+  "name": "@parse/gcs-files-adapter",
   "version": "1.1.2",
   "description": "",
   "main": "index.js",
