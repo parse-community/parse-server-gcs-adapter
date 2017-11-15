@@ -8,7 +8,7 @@ parse-server adapter for Google Cloud Storage
 
 # installation
 
-`npm install --save parse-server-gcs-adapter`
+`npm install --save @parse/gcs-files-adapter`
 
 # usage with parse-server
 
@@ -20,7 +20,7 @@ parse-server adapter for Google Cloud Storage
   "masterKey": 'my_master_key',
   // other options
   "filesAdapter": {
-    "module": "parse-server-gcs-adapter",
+    "module": "@parse/gcs-files-adapter",
     "options": {
       "projectId": "projectId",
       "keyFilename": "path/to/keyfile",
