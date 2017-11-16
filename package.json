@@ -1,7 +1,7 @@
 {
   "name": "@parse/gcs-files-adapter",
   "version": "1.1.2",
-  "description": "",
+  "description": "Google Cloud Storage adapter for parse-server",
   "main": "index.js",
   "dependencies": {
     "@google-cloud/storage": "^1.0.0"
