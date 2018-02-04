@@ -52,7 +52,7 @@ And update your config / options
   "appId": 'my_app_id',
   "masterKey": 'my_master_key',
   // other options
-  "filesAdapter": "parse-server-gcs-adapter"
+  "filesAdapter": "@parse/gcs-files-adapter"
 }
 ```
 
