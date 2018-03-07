@@ -25,9 +25,9 @@ parse-server adapter for Google Cloud Storage
     "module": "@parse/gcs-files-adapter",
     "options": {
       "projectId": "projectId",
-      "keyFilename": "path/to/keyfile",
       "bucket": "my_bucket",
       // optional:
+      "keyFilename": "path/to/keyfile",
       "bucketPrefix": '', // default value
       "directAccess": false // default value
     } 
