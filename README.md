@@ -16,20 +16,21 @@ parse-server adapter for Google Cloud Storage
 
 ### using a config file
 
-```
+```js
 {
-  "appId": 'my_app_id',
-  "masterKey": 'my_master_key',
+  // Parse server options
+  appId: 'my_app_id',
+  masterKey: 'my_master_key',
   // other options
-  "filesAdapter": {
-    "module": "@parse/gcs-files-adapter",
-    "options": {
-      "projectId": "projectId",
-      "keyFilename": "path/to/keyfile",
-      "bucket": "my_bucket",
+  filesAdapter: {
+    module: '@parse/gcs-files-adapter',
+    options: {
+      projectId: 'projectId',
+      keyFilename: '/path/to/keyfile',
+      bucket: 'my_bucket',
       // optional:
-      "bucketPrefix": '', // default value
-      "directAccess": false // default value
+      bucketPrefix: '', // default value
+      directAccess: false // default value
     } 
   }
 }
@@ -41,18 +42,19 @@ Set your environment variables:
 
 ```
 GCP_PROJECT_ID=projectId
-GCP_KEYFILE_PATH=projectId
+GCP_KEYFILE_PATH=/path/to/keyfile
 GCS_BUCKET=bucketName
 ```
 
 And update your config / options
 
-```
+```js
 {
-  "appId": 'my_app_id',
-  "masterKey": 'my_master_key',
+  // Parse server options
+  appId: 'my_app_id',
+  masterKey: 'my_master_key',
   // other options
-  "filesAdapter": "@parse/gcs-files-adapter"
+  filesAdapter: '@parse/gcs-files-adapter'
 }
 ```
 
@@ -63,43 +65,49 @@ Alternatively, you can use
 
 ### passing as an instance
 
-```
+```js
 var GCSAdapter = require('@parse/gcs-files-adapter');
 
-var gcsAdapter = new GCSAdapter('project', 
-								'keyFilePath', 
-								'bucket' , {
-									bucketPrefix: '',
-									directAccess: false
-								});
+var gcsAdapter = new GCSAdapter(
+  'project', 
+  'keyFilePath', 
+  'bucket' , {
+    bucketPrefix: '',
+    directAccess: false
+  }
+);
 
 var api = new ParseServer({
-	appId: 'my_app',
-	masterKey: 'master_key',
-	filesAdapter: gcsAdapter
+  appId: 'my_app',
+  masterKey: 'master_key',
+  filesAdapter: gcsAdapter
 })
 ```
 
 or with an options hash
 
-```
+```js
 var GCSAdapter = require('@parse/gcs-files-adapter');
 
 var gcsOptions = {
-	"projectId": "projectId",
-    "keyFilename": "path/to/keyfile",
-    "bucket": "my_bucket",
-    "bucketPrefix": '',
-	"directAccess": false
+  projectId: 'projectId',
+  keyFilename: '/path/to/keyfile',
+  bucket: 'my_bucket',
+  bucketPrefix: '',
+  directAccess: false
 }
 
 var gcsAdapter = new GCSAdapter(gcsOptions);
 
 var api = new ParseServer({
-	appId: 'my_app',
-	masterKey: 'master_key',
-	filesAdapter: gcsAdapter
-})
+  appId: 'my_app',
+  masterKey: 'master_key',
+  filesAdapter: gcsAdapter
+});
 ```
 
+## Options
+- `directAccess` if set to `true`, uploaded files will be set as public and files will be served directly by Google Cloud Storage. Default is `false` and files are proxied by Parse server.
 
+## Obtaining credentials file
+Visit [Google Cloud documentation page](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) to see how to generate key file with credentials.
