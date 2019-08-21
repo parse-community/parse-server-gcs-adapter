@@ -109,5 +109,5 @@ var api = new ParseServer({
 ## Options
  - `directAccess` if set to `true`, uploaded files will be set as public and files will be served directly by Google Cloud Storage. Default is `false` and files are proxied by Parse server.
 
- ## Obtaining credentials file
+## Obtaining credentials file
  Visit [Google Cloud documentation page](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) to see how to generate key file with credentials
