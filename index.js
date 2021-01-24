@@ -2,7 +2,7 @@
 // GCSAdapter
 // Store Parse Files in Google Cloud Storage: https://cloud.google.com/storage
 // nodejs-storage client readme: https://github.com/googleapis/nodejs-storage#readme
-const storage = require('@google-cloud/storage');
+const {Storage} = require('@google-cloud/storage');
 
 function requiredOrFromEnvironment(options, key, env) {
   options[key] = options[key] || process.env[env];
@@ -56,7 +56,7 @@ function GCSAdapter() {
   this._bucketPrefix = options.bucketPrefix;
   this._directAccess = options.directAccess;
 
-  this._gcsClient = new storage(options);
+  this._gcsClient = new Storage(options);
 }
 
 GCSAdapter.prototype.createFile = function(filename, data, contentType) {
