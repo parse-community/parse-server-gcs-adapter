@@ -81,7 +81,7 @@ GCSAdapter.prototype.createFile = function(filename, data, contentType) {
 GCSAdapter.prototype.deleteFile = function(filename) {
     async function deleteFile() {
       await this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename).delete();
-      console.log(`${this._bucket} ${filename} deleted.`};
+      console.log(`${this._bucket} ${filename} deleted.`);
     }
 
     deleteFile().catch(console.error);
