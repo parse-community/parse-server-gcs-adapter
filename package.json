@@ -26,10 +26,10 @@
     "url": "git+https://github.com/pmmlo/parse-server-gcs-adapter.git"
   },
   "homepage": "https://github.com/pmmlo/parse-server-gcs-adapter#readme",
-  "author":  "Parse",
+  "author": "Parse",
   "contributors": [
-      "Parse",
-      "pmmlo",
+    "Parse",
+    "pmmlo"
   ],
   "license": "MIT"
 }
