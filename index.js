@@ -1,6 +1,7 @@
 'use strict';
 // GCSAdapter
 // Store Parse Files in Google Cloud Storage: https://cloud.google.com/storage
+// nodejs-storage client readme: https://github.com/googleapis/nodejs-storage#readme
 const storage = require('@google-cloud/storage');
 
 function requiredOrFromEnvironment(options, key, env) {
@@ -61,65 +62,43 @@ function GCSAdapter() {
 GCSAdapter.prototype.createFile = function(filename, data, contentType) {
   let params = {
     metadata: {
-      contentType: contentType || 'application/octet-stream'
+	contentType: contentType || 'application/octet-stream'
     }    
   };
 
-  return new Promise((resolve, reject) => {
-    let file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
-    // gcloud supports upload(file) not upload(bytes), so we need to stream.
-    var uploadStream = file.createWriteStream(params);
-    uploadStream.on('error', (err) => {
-      return reject(err);
-    }).on('finish', () => {
-      // Second call to set public read ACL after object is uploaded.
-      if (this._directAccess) {
-        file.makePublic((err, res) => {
-          if (err !== null) {
-            return reject(err);
-          }
-          resolve();
-        });
-      } else {
-        resolve();
-      }
+  async function uploadFile() {
+    await this._gcsClient.bucket(this._bucket).upload(this._bucketPrefix + filename, {
+	gzip: true,
+	params,
     });
-    uploadStream.write(data);
-    uploadStream.end();
-  });
+
+    console.log(`${filename} uploaded to ${bucketName}.`);
+  }
+
+  uploadFile().catch(console.error);
 }
 
 GCSAdapter.prototype.deleteFile = function(filename) {
-  return new Promise((resolve, reject) => {
-    let file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
-    file.delete((err, res) => {
-      if(err !== null) {
-        return reject(err);
-      }
-      resolve(res);
-    });
-  });
+    async function deleteFile() {
+      await this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename).delete();
+      console.log(`${this._bucket} ${filename} deleted.`};
+    }
+
+    deleteFile().catch(console.error);
 }
 
 // Search for and return a file if found by filename.
 // Returns a promise that succeeds with the buffer result from GCS, or fails with an error.
 GCSAdapter.prototype.getFileData = function(filename) {
-  return new Promise((resolve, reject) => {
-    let file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
-    // Check for existence, since gcloud-node seemed to be caching the result
-    file.exists((err, exists) => {
-      if (exists) {
-        file.download((err, data) => {
-          if (err !== null) {
-            return reject(err);
-          }
-          return resolve(data);
-        });
-      } else {
-        reject(err);
-      }
-    });
-  });
+    async function downloadFile() {
+      const options = {
+        destination: filename,
+      };
+      await this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename).download(options);
+
+      console.log(`${this._bucket} ${filename} downloaded.`);
+    }
+    downloadFile().catch(console.error);
 }
 
 // Generates and returns the location of a file stored in GCS for the given request and filename.

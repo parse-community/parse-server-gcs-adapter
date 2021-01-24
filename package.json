@@ -1,15 +1,14 @@
 {
   "name": "@parse/gcs-files-adapter",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "Google Cloud Storage adapter for parse-server",
   "main": "index.js",
   "dependencies": {
-    "@google-cloud/storage": "^1.0.0"
+    "@google-cloud/storage": "^5.7.2"
   },
   "devDependencies": {
-    "codecov": "^2.1.0",
-    "istanbul": "^0.4.2",
-    "jasmine": "^2.4.1",
+    "codecov": "^3.8.1",
+    "jasmine": "^3.6.4",
     "parse-server-conformance-tests": "^1.0.0"
   },
   "scripts": {
@@ -27,6 +26,9 @@
     "url": "git+https://github.com/parse-community/parse-server-gcs-adapter.git"
   },
   "homepage": "https://github.com/parse-community/parse-server-gcs-adapter#readme",
-  "author": "Parse",
+  "contributors": [
+      { "name" : "Parse" },
+      { "name" : "pmmlo" },
+  ]
   "license": "MIT"
 }
