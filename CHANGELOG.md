@@ -1,5 +1,3 @@
-# Change Log
-
 ## [1.1.2](https://github.com/parse-server-modules/parse-server-gcs-adapter/tree/1.1.2) (2017-03-04)
 
 - Bumps @google-cloud/storage to 1.0.0

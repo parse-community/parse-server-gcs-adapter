@@ -1,20 +1,34 @@
-# parse-server-gcs-adapter
+# Parse Server GCS Adapter <!-- omit in toc -->
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/parse-server-modules/parse-server-gcs-adapter.svg)](https://greenkeeper.io/)
-[![Build
-Status](https://travis-ci.org/parse-community/parse-server-gcs-adapter.svg?branch=master)](https://travis-ci.org/parse-community/parse-server-gcs-adapter)
-[![codecov.io](https://codecov.io/github/parse-community/parse-server-gcs-adapter/coverage.svg?branch=master)](https://codecov.io/github/parse-community/parse-server-gcs-adapter?branch=master)
-[![NPM Version](https://img.shields.io/npm/v/@parse/gcs-files-adapter.svg?style=flat-square)](https://www.npmjs.com/package/@parse/gcs-files-adapter)
+[![Build Status](https://github.com/parse-community/parse-server-gcs-adapter/workflows/ci/badge.svg?branch=main)](https://github.com/parse-community/parse-server-gcs-adapter/actions?query=workflow%3Aci+branch%3Amain)
+[![Snyk Badge](https://snyk.io/test/github/parse-community/parse-server-gcs-adapter/badge.svg)](https://snyk.io/test/github/parse-community/parse-server-gcs-adapter)
+[![Coverage](https://img.shields.io/codecov/c/github/parse-community/parse-server-gcs-adapter/main.svg)](https://codecov.io/github/parse-community/parse-server-gcs-adapter?branch=main)
+[![auto-release](https://img.shields.io/badge/%F0%9F%9A%80-auto--release-9e34eb.svg)](https://github.com/parse-community/parse-server-gcs-adapter/releases)
 
-parse-server adapter for Google Cloud Storage
+[![npm latest version](https://img.shields.io/npm/v/@parse/gcs-files-adapter.svg)](https://www.npmjs.com/package/@parse/gcs-files-adapter)
 
-# installation
+---
+
+The Parse Server Google Cloud Storage Adapter.
+
+---
+
+
+- [Installation](#installation)
+- [Usage with Parse Server](#usage-with-parse-server)
+    - [Config File](#config-file)
+    - [Environment Variables](#environment-variables)
+    - [Instance Parameters](#instance-parameters)
+  - [Options](#options)
+  - [Obtaining Credentials File](#obtaining-credentials-file)
+
+# Installation
 
 `npm install --save @parse/gcs-files-adapter`
 
-# usage with parse-server
+# Usage with Parse Server
 
-### using a config file
+### Config File
 
 ```js
 {
@@ -36,7 +50,7 @@ parse-server adapter for Google Cloud Storage
 }
 ```
 
-### using environment variables
+### Environment Variables
 
 Set your environment variables:
 
@@ -63,7 +77,7 @@ Alternatively, you can use
 `GCLOUD_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS` environment variables.
 
 
-### passing as an instance
+### Instance Parameters
 
 ```js
 var GCSAdapter = require('@parse/gcs-files-adapter');
@@ -107,7 +121,9 @@ var api = new ParseServer({
 ```
 
 ## Options
-- `directAccess` if set to `true`, uploaded files will be set as public and files will be served directly by Google Cloud Storage. Default is `false` and files are proxied by Parse server.
 
-## Obtaining credentials file
-Visit [Google Cloud documentation page](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) to see how to generate key file with credentials.
+- `directAccess`: if set to `true`, uploaded files will be set as public and files will be served directly by Google Cloud Storage. Default is `false` and files are proxied by Parse Server.
+
+## Obtaining Credentials File
+
+See the [Google Cloud documentation](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) for how to generate a key file with credentials.
