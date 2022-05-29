@@ -37,7 +37,7 @@ async function config() {
 
   const config = {
     branches: [
-      'master',
+      'main',
       // { name: 'alpha', prerelease: true },
       // { name: 'beta', prerelease: true },
       // 'next-major',
