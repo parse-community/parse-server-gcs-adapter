@@ -18,7 +18,7 @@
   "author": "Parse",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/storage": "^1.0.0"
+    "@google-cloud/storage": "6.2.3"
   },
   "devDependencies": {
     "@semantic-release/changelog": "5.0.1",
