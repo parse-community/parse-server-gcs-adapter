@@ -1,7 +1,7 @@
 'use strict';
 // GCSAdapter
 // Store Parse Files in Google Cloud Storage: https://cloud.google.com/storage
-const storage = require('@google-cloud/storage');
+const { Storage } = require('@google-cloud/storage');
 
 function requiredOrFromEnvironment(options, key, env) {
   options[key] = options[key] || process.env[env];
@@ -29,7 +29,7 @@ function optionsFromArguments(args) {
       options.directAccess = otherOptions.directAccess;
     }
   } else {
-    options = Object.assign( {}, projectIdOrOptions);
+    options = Object.assign({}, projectIdOrOptions);
   }
   options = fromEnvironmentOrDefault(options, 'projectId', 'GCP_PROJECT_ID', undefined);
   options = fromEnvironmentOrDefault(options, 'keyFilename', 'GCP_KEYFILE_PATH', undefined);
@@ -55,14 +55,14 @@ function GCSAdapter() {
   this._bucketPrefix = options.bucketPrefix;
   this._directAccess = options.directAccess;
 
-  this._gcsClient = new storage(options);
+  this._gcsClient = new Storage(options);
 }
 
-GCSAdapter.prototype.createFile = function(filename, data, contentType) {
+GCSAdapter.prototype.createFile = function (filename, data, contentType) {
   let params = {
     metadata: {
       contentType: contentType || 'application/octet-stream'
-    }    
+    }
   };
 
   return new Promise((resolve, reject) => {
@@ -89,11 +89,11 @@ GCSAdapter.prototype.createFile = function(filename, data, contentType) {
   });
 }
 
-GCSAdapter.prototype.deleteFile = function(filename) {
+GCSAdapter.prototype.deleteFile = function (filename) {
   return new Promise((resolve, reject) => {
     let file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
     file.delete((err, res) => {
-      if(err !== null) {
+      if (err !== null) {
         return reject(err);
       }
       resolve(res);
@@ -103,7 +103,7 @@ GCSAdapter.prototype.deleteFile = function(filename) {
 
 // Search for and return a file if found by filename.
 // Returns a promise that succeeds with the buffer result from GCS, or fails with an error.
-GCSAdapter.prototype.getFileData = function(filename) {
+GCSAdapter.prototype.getFileData = function (filename) {
   return new Promise((resolve, reject) => {
     let file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
     // Check for existence, since gcloud-node seemed to be caching the result
@@ -125,7 +125,7 @@ GCSAdapter.prototype.getFileData = function(filename) {
 // Generates and returns the location of a file stored in GCS for the given request and filename.
 // The location is the direct GCS link if the option is set,
 // otherwise we serve the file through parse-server.
-GCSAdapter.prototype.getFileLocation = function(config, filename) {
+GCSAdapter.prototype.getFileLocation = function (config, filename) {
   if (this._directAccess) {
     return `https://storage.googleapis.com/${this._bucket}/${this._bucketPrefix + filename}`;
   }
