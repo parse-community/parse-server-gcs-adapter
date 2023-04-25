@@ -32,7 +32,7 @@
     "jasmine": "^2.4.1",
     "nyc": "15.1.0",
     "parse-server-conformance-tests": "^1.0.0",
-    "semantic-release": "19.0.3"
+    "semantic-release": "21.0.1"
   },
   "scripts": {
     "test": "jasmine",
