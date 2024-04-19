@@ -1,8 +1,13 @@
 {
   "name": "@parse/gcs-files-adapter",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Google Cloud Storage adapter for parse-server",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "parse-server",
     "google",
@@ -27,15 +32,19 @@
     "@semantic-release/github": "7.2.3",
     "@semantic-release/npm": "7.1.3",
     "@semantic-release/release-notes-generator": "9.0.3",
+    "@types/node": "^20.12.7",
     "codecov": "^3.8.3",
     "istanbul": "^0.4.2",
     "jasmine": "^2.4.1",
     "nyc": "15.1.0",
     "parse-server-conformance-tests": "^1.0.0",
-    "semantic-release": "21.0.1"
+    "semantic-release": "21.0.1",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
   },
   "scripts": {
     "test": "jasmine",
+    "build": "tsup",
     "coverage": "nyc jasmine"
   }
 }
