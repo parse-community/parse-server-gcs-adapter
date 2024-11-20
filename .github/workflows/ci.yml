@@ -31,4 +31,10 @@ jobs:
               ${{ runner.os }}-node-
       - run: npm ci
       - run: npm run coverage
-      - run: bash <(curl -s https://codecov.io/bash)
+        env:
+          CI: true
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
