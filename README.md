@@ -5,6 +5,7 @@
 [![Coverage](https://img.shields.io/codecov/c/github/parse-community/parse-server-gcs-adapter/main.svg)](https://codecov.io/github/parse-community/parse-server-gcs-adapter?branch=main)
 [![auto-release](https://img.shields.io/badge/%F0%9F%9A%80-auto--release-9e34eb.svg)](https://github.com/parse-community/parse-server-gcs-adapter/releases)
 
+[![Node Version](https://img.shields.io/badge/nodejs-18,_20,_22-green.svg?logo=node.js&style=flat)](https://nodejs.org)
 [![npm latest version](https://img.shields.io/npm/v/@parse/gcs-files-adapter.svg)](https://www.npmjs.com/package/@parse/gcs-files-adapter)
 
 ---
