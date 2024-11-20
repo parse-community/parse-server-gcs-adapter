@@ -1,3 +1,17 @@
+## [1.2.1](https://github.com/parse-community/parse-server-gcs-adapter/compare/1.2.0...1.2.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* security upgrade qs from 6.5.2 to 6.5.3 ([#44](https://github.com/parse-community/parse-server-gcs-adapter/issues/44)) ([c9473d1](https://github.com/parse-community/parse-server-gcs-adapter/commit/c9473d15c12a45904dcd6a31de8bfa0088570add))
+
+# [1.2.0](https://github.com/parse-community/parse-server-gcs-adapter/compare/1.1.3...1.2.0) (2022-08-05)
+
+
+### Features
+
+* upgrade to latest Google Cloud Storage library ([#40](https://github.com/parse-community/parse-server-gcs-adapter/issues/40)) ([00b89b7](https://github.com/parse-community/parse-server-gcs-adapter/commit/00b89b737f2442518fc8127484562ecf43d96436))
+
 ## [1.1.3](https://github.com/parse-community/parse-server-gcs-adapter/compare/v1.1.2...1.1.3) (2022-06-10)
 
 
