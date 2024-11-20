@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/parse-community/parse-server-gcs-adapter/compare/1.2.1...2.0.0) (2024-11-20)
+
+
+### Features
+
+* Add support for Node 20, 22; remove support for Node 12, 14, 15, 16, 17 ([#54](https://github.com/parse-community/parse-server-gcs-adapter/issues/54)) ([5415314](https://github.com/parse-community/parse-server-gcs-adapter/commit/54153149a7a7a7ba0685691dfe11c10332041f0c))
+
+
+### BREAKING CHANGES
+
+* Removes support for Node 12, 14, 15, 16, 17. ([5415314](5415314))
+
 ## [1.2.1](https://github.com/parse-community/parse-server-gcs-adapter/compare/1.2.0...1.2.1) (2022-12-14)
 
 
