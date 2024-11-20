@@ -1,6 +1,6 @@
 # Parse Server GCS Adapter <!-- omit in toc -->
 
-[![Build Status](https://github.com/parse-community/parse-server-gcs-adapter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/parse-community/parse-server-gcs-adapter/actions/workflows/ci.yml?query=workflow%3Aci+branch%main)
+[![Build Status](https://github.com/parse-community/parse-server-gcs-adapter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/parse-community/parse-server-gcs-adapter/actions/workflows/ci.yml?query=workflow%3Aci+branch%3Amain)
 [![Snyk Badge](https://snyk.io/test/github/parse-community/parse-server-gcs-adapter/badge.svg)](https://snyk.io/test/github/parse-community/parse-server-gcs-adapter)
 [![Coverage](https://img.shields.io/codecov/c/github/parse-community/parse-server-gcs-adapter/main.svg)](https://codecov.io/github/parse-community/parse-server-gcs-adapter?branch=main)
 [![auto-release](https://img.shields.io/badge/%F0%9F%9A%80-auto--release-9e34eb.svg)](https://github.com/parse-community/parse-server-gcs-adapter/releases)
