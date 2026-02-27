@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/parse-community/parse-server-gcs-adapter/compare/2.0.0...2.1.0) (2026-02-27)
+
+
+### Features
+
+* Upgrade to @google-cloud/storage 7.19.0 ([#57](https://github.com/parse-community/parse-server-gcs-adapter/issues/57)) ([b1446ed](https://github.com/parse-community/parse-server-gcs-adapter/commit/b1446ed89c3c8ec9e4da1cb6c7c30fd23382e1d8))
+
 # [2.0.0](https://github.com/parse-community/parse-server-gcs-adapter/compare/1.2.1...2.0.0) (2024-11-20)
 
 
