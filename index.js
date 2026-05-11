@@ -4,7 +4,7 @@ const storage_1 = require("@google-cloud/storage");
 function requiredOrFromEnvironment(options, key, env) {
     options[key] = options[key] || process.env[env];
     if (!options[key]) {
-        throw `GCSAdapter requires an ${key}`;
+        throw new Error(`GCSAdapter requires an ${key}`);
     }
     return options;
 }

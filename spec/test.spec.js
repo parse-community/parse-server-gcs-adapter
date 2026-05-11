@@ -8,23 +8,23 @@ describe('GCSAdapter tests', () => {
   it('should throw when not initialized properly', () => {
     expect(() => {
       return new GCSAdapter();
-    }).toThrow('GCSAdapter requires an bucket');
+    }).toThrowError('GCSAdapter requires an bucket');
 
     expect(() => {
       return new GCSAdapter('projectId');
-    }).toThrow('GCSAdapter requires an bucket');
+    }).toThrowError('GCSAdapter requires an bucket');
 
     expect(() => {
       return new GCSAdapter('projectId', 'keyFilename');
-    }).toThrow('GCSAdapter requires an bucket');
+    }).toThrowError('GCSAdapter requires an bucket');
 
     expect(() => {
       return new GCSAdapter({ projectId: 'projectId' });
-    }).toThrow('GCSAdapter requires an bucket');
+    }).toThrowError('GCSAdapter requires an bucket');
 
     expect(() => {
       return new GCSAdapter({ projectId: 'projectId', keyFilename: 'keyFilename' });
-    }).toThrow('GCSAdapter requires an bucket');
+    }).toThrowError('GCSAdapter requires an bucket');
   });
 
   it('should not throw when initialized properly', () => {

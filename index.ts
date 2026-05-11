@@ -23,7 +23,7 @@ function requiredOrFromEnvironment(
 ): GCSAdapterOptions {
   options[key] = options[key] || process.env[env];
   if (!options[key]) {
-    throw `GCSAdapter requires an ${key}`;
+    throw new Error(`GCSAdapter requires an ${key}`);
   }
   return options;
 }
