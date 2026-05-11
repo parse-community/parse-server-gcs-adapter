@@ -80,7 +80,75 @@ describe('GCSAdapter tests', () => {
       expect(directAdapter.getFileLocation({
         mount: '/parse',
         applicationId: 'appId'
-      }, 'file.txt')).toBe('https://storage.googleapis.com/bucket/prefix/file.txt');
+      }, 'folder/file name.txt')).toBe('https://storage.googleapis.com/bucket/prefix/folder/file%20name.txt');
+    });
+  });
+
+  describe('input validation', () => {
+    let gcsAdapter;
+
+    beforeEach(() => {
+      gcsAdapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket'
+      });
+    });
+
+    it('should reject relative object paths', (done) => {
+      expect(() => {
+        gcsAdapter.getFileLocation({
+          mount: '/parse',
+          applicationId: 'appId'
+        }, '../secret.txt');
+      }).toThrowError('GCSAdapter filename cannot contain relative path segments');
+
+      gcsAdapter.deleteFile('folder/../secret.txt')
+        .then(() => {
+          fail('Promise should have rejected');
+          done();
+        })
+        .catch((err) => {
+          expect(err.message).toBe('GCSAdapter filename cannot contain relative path segments');
+          done();
+        });
+    });
+
+    it('should reject unsafe content types before uploading', (done) => {
+      gcsAdapter.createFile('safe.txt', 'data', 'text/plain\r\nx-bad: yes')
+        .then(() => {
+          fail('Promise should have rejected');
+          done();
+        })
+        .catch((err) => {
+          expect(err.message).toBe('GCSAdapter contentType cannot contain line breaks');
+          done();
+        });
+    });
+
+    it('should reject missing files with an Error when GCS returns no error', (done) => {
+      let mockExists = jasmine.createSpy('exists');
+      let mockFile = { exists: mockExists };
+      let mockBucket = jasmine.createSpyObj('bucket', ['file']);
+      mockBucket.file.and.returnValue(mockFile);
+      let mockStorage = jasmine.createSpyObj('storage', ['bucket']);
+      mockStorage.bucket.and.returnValue(mockBucket);
+      gcsAdapter._gcsClient = mockStorage;
+
+      mockExists.and.callFake((callback) => {
+        callback(null, false);
+      });
+
+      gcsAdapter.getFileData('missing.txt')
+        .then(() => {
+          fail('Promise should have rejected');
+          done();
+        })
+        .catch((err) => {
+          expect(err instanceof Error).toBe(true);
+          expect(err.message).toBe('File missing.txt does not exist.');
+          done();
+        });
     });
   });
 

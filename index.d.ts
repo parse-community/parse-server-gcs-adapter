@@ -22,5 +22,6 @@ declare class GCSAdapter {
         mount: string;
         applicationId: string;
     }, filename: string): string;
+    private filePath;
 }
 export default GCSAdapter;

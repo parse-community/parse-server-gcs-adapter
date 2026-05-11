@@ -18,6 +18,25 @@ function booleanFromEnvironmentOrDefault(options, key, env, defaultValue) {
     }
     return options;
 }
+function contentTypeOrDefault(contentType) {
+    const resolvedContentType = contentType || 'application/octet-stream';
+    if (/[\r\n]/.test(resolvedContentType)) {
+        throw new Error('GCSAdapter contentType cannot contain line breaks');
+    }
+    return resolvedContentType;
+}
+function validateFilePath(filePath) {
+    if (!filePath || filePath.startsWith('/') || filePath.includes('\\')) {
+        throw new Error('GCSAdapter filename must be a relative Google Cloud Storage object name');
+    }
+    if (filePath.split('/').some((part) => part === '.' || part === '..')) {
+        throw new Error('GCSAdapter filename cannot contain relative path segments');
+    }
+    return filePath;
+}
+function encodeGCSObjectName(filePath) {
+    return filePath.split('/').map(encodeURIComponent).join('/');
+}
 function optionsFromArguments(args) {
     let options = {};
     const projectIdOrOptions = args[0];
@@ -59,15 +78,23 @@ class GCSAdapter {
         this._gcsClient = new storage_1.Storage(options);
     }
     createFile(filename, data, contentType) {
-        const params = {
-            metadata: {
-                contentType: contentType || 'application/octet-stream'
-            }
-        };
+        let filePath;
+        let resolvedContentType;
+        try {
+            filePath = this.filePath(filename);
+            resolvedContentType = contentTypeOrDefault(contentType);
+        }
+        catch (err) {
+            return Promise.reject(err);
+        }
         return new Promise((resolve, reject) => {
-            const file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
+            const file = this._gcsClient.bucket(this._bucket).file(filePath);
             // gcloud supports upload(file) not upload(bytes), so we need to stream.
-            const uploadStream = file.createWriteStream(params);
+            const uploadStream = file.createWriteStream({
+                metadata: {
+                    contentType: resolvedContentType
+                }
+            });
             uploadStream.on('error', (err) => {
                 reject(err);
             }).on('finish', () => {
@@ -90,8 +117,15 @@ class GCSAdapter {
         });
     }
     deleteFile(filename) {
+        let filePath;
+        try {
+            filePath = this.filePath(filename);
+        }
+        catch (err) {
+            return Promise.reject(err);
+        }
         return new Promise((resolve, reject) => {
-            const file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
+            const file = this._gcsClient.bucket(this._bucket).file(filePath);
             file.delete((err, response) => {
                 if (err !== null) {
                     reject(err);
@@ -104,8 +138,15 @@ class GCSAdapter {
     // Search for and return a file if found by filename.
     // Returns a promise that succeeds with the buffer result from GCS, or fails with an error.
     getFileData(filename) {
+        let filePath;
+        try {
+            filePath = this.filePath(filename);
+        }
+        catch (err) {
+            return Promise.reject(err);
+        }
         return new Promise((resolve, reject) => {
-            const file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
+            const file = this._gcsClient.bucket(this._bucket).file(filePath);
             // Check for existence, since gcloud-node seemed to be caching the result
             file.exists((err, exists) => {
                 if (exists) {
@@ -118,7 +159,7 @@ class GCSAdapter {
                     });
                 }
                 else {
-                    reject(err);
+                    reject(err || new Error(`File ${filename} does not exist.`));
                 }
             });
         });
@@ -127,10 +168,14 @@ class GCSAdapter {
     // The location is the direct GCS link if the option is set,
     // otherwise we serve the file through parse-server.
     getFileLocation(config, filename) {
+        const filePath = this.filePath(filename);
         if (this._directAccess) {
-            return `https://storage.googleapis.com/${this._bucket}/${this._bucketPrefix + filename}`;
+            return `https://storage.googleapis.com/${this._bucket}/${encodeGCSObjectName(filePath)}`;
         }
         return `${config.mount}/files/${config.applicationId}/${encodeURIComponent(filename)}`;
+    }
+    filePath(filename) {
+        return validateFilePath(this._bucketPrefix + filename);
     }
 }
 exports.default = GCSAdapter;
