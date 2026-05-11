@@ -39,8 +39,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jasmine",
-    "coverage": "nyc jasmine",
+    "test": "npm run build && jasmine",
+    "coverage": "npm run build && nyc jasmine",
     "prepack": "npm run build"
   }
 }
