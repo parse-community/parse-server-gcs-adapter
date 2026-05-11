@@ -37,6 +37,53 @@ describe('GCSAdapter tests', () => {
     }).not.toThrow();
   });
 
+  it('should keep the default export for transpiled imports', () => {
+    expect(GCSAdapter.default).toBe(GCSAdapter);
+  });
+
+  describe('environment options', () => {
+    let directAccess;
+
+    beforeEach(() => {
+      directAccess = process.env.GCS_DIRECT_ACCESS;
+    });
+
+    afterEach(() => {
+      if (directAccess === undefined) {
+        delete process.env.GCS_DIRECT_ACCESS;
+      } else {
+        process.env.GCS_DIRECT_ACCESS = directAccess;
+      }
+    });
+
+    it('should parse GCS_DIRECT_ACCESS as a boolean', () => {
+      process.env.GCS_DIRECT_ACCESS = 'false';
+      let proxiedAdapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket'
+      });
+
+      expect(proxiedAdapter.getFileLocation({
+        mount: '/parse',
+        applicationId: 'appId'
+      }, 'folder/file name.txt')).toBe('/parse/files/appId/folder%2Ffile%20name.txt');
+
+      process.env.GCS_DIRECT_ACCESS = 'true';
+      let directAdapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket',
+        bucketPrefix: 'prefix/'
+      });
+
+      expect(directAdapter.getFileLocation({
+        mount: '/parse',
+        applicationId: 'appId'
+      }, 'file.txt')).toBe('https://storage.googleapis.com/bucket/prefix/file.txt');
+    });
+  });
+
   describe('deleteFile', () => {
     let gcsAdapter;
     let mockStorage;
