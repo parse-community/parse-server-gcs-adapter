@@ -34,7 +34,9 @@ function stringFromEnvironmentOrDefault(
   env: string,
   defaultValue?: string
 ): GCSAdapterOptions {
-  options[key] = options[key] || process.env[env] || defaultValue;
+  if (options[key] === undefined) {
+    options[key] = process.env[env] !== undefined ? process.env[env] : defaultValue;
+  }
   return options;
 }
 

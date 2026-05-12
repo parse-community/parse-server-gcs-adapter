@@ -9,7 +9,9 @@ function requiredOrFromEnvironment(options, key, env) {
     return options;
 }
 function stringFromEnvironmentOrDefault(options, key, env, defaultValue) {
-    options[key] = options[key] || process.env[env] || defaultValue;
+    if (options[key] === undefined) {
+        options[key] = process.env[env] !== undefined ? process.env[env] : defaultValue;
+    }
     return options;
 }
 function booleanFromEnvironmentOrDefault(options, key, env, defaultValue) {

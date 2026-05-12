@@ -43,9 +43,11 @@ describe('GCSAdapter tests', () => {
 
   describe('environment options', () => {
     let directAccess;
+    let bucketPrefix;
 
     beforeEach(() => {
       directAccess = process.env.GCS_DIRECT_ACCESS;
+      bucketPrefix = process.env.GCS_BUCKET_PREFIX;
     });
 
     afterEach(() => {
@@ -53,6 +55,12 @@ describe('GCSAdapter tests', () => {
         delete process.env.GCS_DIRECT_ACCESS;
       } else {
         process.env.GCS_DIRECT_ACCESS = directAccess;
+      }
+
+      if (bucketPrefix === undefined) {
+        delete process.env.GCS_BUCKET_PREFIX;
+      } else {
+        process.env.GCS_BUCKET_PREFIX = bucketPrefix;
       }
     });
 
@@ -81,6 +89,22 @@ describe('GCSAdapter tests', () => {
         mount: '/parse',
         applicationId: 'appId'
       }, 'folder/file name.txt')).toBe('https://storage.googleapis.com/bucket/prefix/folder/file%20name.txt');
+    });
+
+    it('should preserve an explicit empty bucketPrefix over the environment', () => {
+      process.env.GCS_BUCKET_PREFIX = 'env-prefix/';
+      let adapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket',
+        bucketPrefix: '',
+        directAccess: true
+      });
+
+      expect(adapter.getFileLocation({
+        mount: '/parse',
+        applicationId: 'appId'
+      }, 'folder/file name.txt')).toBe('https://storage.googleapis.com/bucket/folder/file%20name.txt');
     });
   });
 
