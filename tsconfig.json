@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "target": "ES2019"
+  },
+  "include": [
+    "index.ts"
+  ]
+}
