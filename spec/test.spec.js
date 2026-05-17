@@ -1,7 +1,9 @@
 'use strict';
 let filesAdapterTests = require('parse-server-conformance-tests').files;
+let fs = require('fs');
+let path = require('path');
 
-let GCSAdapter = require('../index.js');
+let GCSAdapter = require('../dist/index.js');
 
 describe('GCSAdapter tests', () => {
 
@@ -35,6 +37,21 @@ describe('GCSAdapter tests', () => {
     expect(() => {
       return new GCSAdapter({ projectId: 'projectId', keyFilename: 'keyFilename', bucket: 'bucket' });
     }).not.toThrow();
+  });
+
+  describe('package entrypoints', () => {
+    it('publishes compiled JavaScript and TypeScript declarations', () => {
+      let packageJson = require('../package.json');
+
+      expect(packageJson.main).toBe('dist/index.js');
+      expect(packageJson.types).toBe('dist/index.d.ts');
+      if (packageJson.main) {
+        expect(fs.existsSync(path.join(__dirname, '..', packageJson.main))).toBe(true);
+      }
+      if (packageJson.types) {
+        expect(fs.existsSync(path.join(__dirname, '..', packageJson.types))).toBe(true);
+      }
+    });
   });
 
   describe('deleteFile', () => {
