@@ -11,7 +11,7 @@ interface GCSAdapterOptions extends StorageOptions {
 interface ResolvedGCSAdapterOptions extends StorageOptions {
   bucket: string;
   bucketPrefix: string;
-  directAccess: boolean | string;
+  directAccess: boolean;
 }
 
 interface LegacyOptions {
@@ -49,8 +49,18 @@ function fromEnvironmentOrDefault<K extends keyof GCSAdapterOptions>(
   env: string,
   defaultValue: GCSAdapterOptions[K]
 ): GCSAdapterOptions {
-  options[key] = options[key] || (process.env[env] as GCSAdapterOptions[K]) || defaultValue;
+  options[key] = options[key] ?? (process.env[env] as GCSAdapterOptions[K] | undefined) ?? defaultValue;
   return options;
+}
+
+function normalizeDirectAccess(directAccess: boolean | string | undefined): boolean {
+  if (typeof directAccess === 'boolean') {
+    return directAccess;
+  }
+  if (typeof directAccess === 'string') {
+    return ['true', '1', 'yes'].includes(directAccess.trim().toLowerCase());
+  }
+  return false;
 }
 
 function optionsFromArguments(
@@ -76,6 +86,7 @@ function optionsFromArguments(
   options = requiredOrFromEnvironment(options, 'bucket', 'GCS_BUCKET');
   options = fromEnvironmentOrDefault(options, 'bucketPrefix', 'GCS_BUCKET_PREFIX', '');
   options = fromEnvironmentOrDefault(options, 'directAccess', 'GCS_DIRECT_ACCESS', false);
+  options.directAccess = normalizeDirectAccess(options.directAccess);
   return options as ResolvedGCSAdapterOptions;
 }
 
@@ -93,7 +104,7 @@ class GCSAdapter {
 
   _bucket: string;
   _bucketPrefix: string;
-  _directAccess: boolean | string;
+  _directAccess: boolean;
   _gcsClient: GCSClient;
 
   constructor(
@@ -161,16 +172,18 @@ class GCSAdapter {
       const file = this._gcsClient.bucket(this._bucket).file(this._bucketPrefix + filename);
       // Check for existence, since gcloud-node seemed to be caching the result
       file.exists((err, exists) => {
-        if (exists) {
-          file.download((downloadErr, data) => {
-            if (downloadErr !== null) {
-              return reject(downloadErr);
-            }
-            return resolve(data);
-          });
-        } else {
-          reject(err);
+        if (err !== null) {
+          return reject(err);
         }
+        if (!exists) {
+          return resolve(undefined);
+        }
+        file.download((downloadErr, data) => {
+          if (downloadErr !== null) {
+            return reject(downloadErr);
+          }
+          return resolve(data);
+        });
       });
     });
   }

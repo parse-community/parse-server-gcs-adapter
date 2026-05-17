@@ -145,6 +145,104 @@ describe('GCSAdapter tests', () => {
     });
   });
 
+  describe('directAccess', () => {
+    let previousDirectAccess;
+
+    beforeEach(() => {
+      previousDirectAccess = process.env.GCS_DIRECT_ACCESS;
+    });
+
+    afterEach(() => {
+      if (previousDirectAccess === undefined) {
+        delete process.env.GCS_DIRECT_ACCESS;
+      } else {
+        process.env.GCS_DIRECT_ACCESS = previousDirectAccess;
+      }
+    });
+
+    it('should treat GCS_DIRECT_ACCESS=false as disabled', () => {
+      process.env.GCS_DIRECT_ACCESS = 'false';
+
+      let gcsAdapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket',
+        bucketPrefix: 'prefix/'
+      });
+
+      expect(gcsAdapter.getFileLocation({
+        mount: '/parse',
+        applicationId: 'app'
+      }, 'my file.txt')).toBe('/parse/files/app/my%20file.txt');
+    });
+
+    it('should prefer an explicit directAccess option over GCS_DIRECT_ACCESS', () => {
+      process.env.GCS_DIRECT_ACCESS = 'true';
+
+      let gcsAdapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket',
+        bucketPrefix: 'prefix/',
+        directAccess: false
+      });
+
+      expect(gcsAdapter.getFileLocation({
+        mount: '/parse',
+        applicationId: 'app'
+      }, 'my file.txt')).toBe('/parse/files/app/my%20file.txt');
+    });
+  });
+
+  describe('getFileData', () => {
+    let gcsAdapter;
+    let mockStorage;
+    let mockBucket;
+    let mockFile;
+    let mockExists;
+    let mockDownload;
+
+    beforeEach(() => {
+      mockExists = jasmine.createSpy('exists');
+      mockDownload = jasmine.createSpy('download');
+      mockFile = {
+        exists: mockExists,
+        download: mockDownload
+      };
+      mockBucket = jasmine.createSpyObj('bucket', ['file']);
+      mockBucket.file.and.returnValue(mockFile);
+      mockStorage = jasmine.createSpyObj('storage', ['bucket']);
+      mockStorage.bucket.and.returnValue(mockBucket);
+
+      gcsAdapter = new GCSAdapter({
+        projectId: 'projectId',
+        keyFilename: 'keyFilename',
+        bucket: 'bucket',
+        bucketPrefix: 'prefix/'
+      });
+      gcsAdapter._gcsClient = mockStorage;
+    });
+
+    it('should resolve undefined when the file does not exist', (done) => {
+      mockExists.and.callFake((callback) => {
+        callback(null, false);
+      });
+
+      gcsAdapter.getFileData('missing.txt')
+        .then((data) => {
+          expect(data).toBeUndefined();
+          expect(mockStorage.bucket).toHaveBeenCalledWith('bucket');
+          expect(mockBucket.file).toHaveBeenCalledWith('prefix/missing.txt');
+          expect(mockDownload).not.toHaveBeenCalled();
+          done();
+        })
+        .catch((err) => {
+          fail('Promise should not reject: ' + err);
+          done();
+        });
+    });
+  });
+
   if (process.env.GCP_PROJECT_ID && process.env.GCP_KEYFILE_PATH && process.env.GCS_BUCKET) {
     // Should be initialized from the env
     let gcsAdapter = new GCSAdapter();
