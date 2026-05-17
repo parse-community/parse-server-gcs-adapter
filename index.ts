@@ -49,7 +49,7 @@ function fromEnvironmentOrDefault<K extends keyof GCSAdapterOptions>(
   env: string,
   defaultValue: GCSAdapterOptions[K]
 ): GCSAdapterOptions {
-  options[key] = options[key] ?? (process.env[env] as GCSAdapterOptions[K] | undefined) ?? defaultValue;
+  options[key] = options[key] || (process.env[env] as GCSAdapterOptions[K]) || defaultValue;
   return options;
 }
 
@@ -85,7 +85,9 @@ function optionsFromArguments(
   options = fromEnvironmentOrDefault(options, 'keyFilename', 'GCP_KEYFILE_PATH', undefined);
   options = requiredOrFromEnvironment(options, 'bucket', 'GCS_BUCKET');
   options = fromEnvironmentOrDefault(options, 'bucketPrefix', 'GCS_BUCKET_PREFIX', '');
-  options = fromEnvironmentOrDefault(options, 'directAccess', 'GCS_DIRECT_ACCESS', false);
+  if (options.directAccess == null) {
+    options.directAccess = process.env.GCS_DIRECT_ACCESS || false;
+  }
   options.directAccess = normalizeDirectAccess(options.directAccess);
   return options as ResolvedGCSAdapterOptions;
 }
