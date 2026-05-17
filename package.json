@@ -2,7 +2,8 @@
   "name": "@parse/gcs-files-adapter",
   "version": "2.1.0",
   "description": "Google Cloud Storage adapter for parse-server",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "parse-server",
     "google",
@@ -17,6 +18,9 @@
   "homepage": "https://github.com/parse-community/parse-server-gcs-adapter#readme",
   "author": "Parse",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@google-cloud/storage": "7.19.0"
   },
@@ -27,15 +31,19 @@
     "@semantic-release/github": "11.0.1",
     "@semantic-release/npm": "12.0.1",
     "@semantic-release/release-notes-generator": "14.0.1",
+    "@types/node": "^22.10.2",
     "codecov": "^3.8.3",
     "istanbul": "^0.4.2",
     "jasmine": "^2.4.1",
     "nyc": "15.1.0",
     "parse-server-conformance-tests": "^1.0.0",
-    "semantic-release": "24.2.0"
+    "semantic-release": "24.2.0",
+    "typescript": "^5.9.3"
   },
   "scripts": {
-    "test": "jasmine",
-    "coverage": "nyc jasmine"
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.json",
+    "prepack": "node ./node_modules/typescript/bin/tsc -p tsconfig.json",
+    "test": "node ./node_modules/typescript/bin/tsc -p tsconfig.json && node ./node_modules/jasmine/bin/jasmine.js",
+    "coverage": "node ./node_modules/typescript/bin/tsc -p tsconfig.json && node ./node_modules/nyc/bin/nyc.js node ./node_modules/jasmine/bin/jasmine.js"
   }
 }
